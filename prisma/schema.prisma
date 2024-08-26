@@ -1,0 +1,14 @@
+generator client {
+  provider = "dart run orm"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model user {
+  id       Int    @id @default(autoincrement())
+  username String @db.VarChar(20)
+  password String @db.VarChar(20)
+}
