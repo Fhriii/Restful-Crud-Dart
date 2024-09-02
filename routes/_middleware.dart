@@ -14,11 +14,7 @@ final prisma = PrismaClient(
 Handler middleware(Handler handler) {
   return handler
     .use(requestLogger())
-    .use(cors(
-      allowOrigin: '*', // Mengizinkan semua origin
-      allowHeaders: 'Content-Type, Authorization', // Daftar header yang diizinkan
-      allowMethods: 'GET, POST, PUT, DELETE, OPTIONS', // Daftar metode yang diizinkan
-    ))
+    .use(cors())
     .use(provider<PrismaClient>((context) => prisma))
     .use((handler) {
       return (context) async {

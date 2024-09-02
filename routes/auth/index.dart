@@ -28,8 +28,20 @@ Future<Response> _create(RequestContext context)async{
   final username=jsonBody['username'] as String;
   final password=jsonBody['password'] as String;
   final prisma = context.read<PrismaClient>();
-  final userCreated=(await prisma.user.create(data: UserCreateInput(password: password,username: username)));
-  return Response.json(body: userCreated);
+  final userr = await prisma.user.findFirst(
+  where: UserWhereInput(
+    username: StringFilter(equals: username),
+    password: StringFilter(equals: password)
+  ),
+);
+
+if(userr!=null){
+  return Response.json(statusCode: 200,
+        body: {'status':'success'},);
+}else{
+  return Response.json(statusCode: 404,body: {'error': 'User not found'});
+}
+
 }
 Response _notFound(){
   return Response.json(statusCode: 404);
